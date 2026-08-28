@@ -11,5 +11,7 @@ npm install -D electron vite @vitejs/plugin-react tailwindcss postcss autoprefix
 npm install @prisma/client
 
 # 5. Inicializar Tailwind y Prisma
-npx tailwindcss init -p
+npm install -D @tailwindcss/vite
 npx prisma init --datasource-provider sqlite
+
+@import "tailwindcss";
