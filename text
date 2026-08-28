@@ -1,0 +1,15 @@
+# 1. Crear carpetas de estructura
+mkdir src/main, src/preload, src/renderer, prisma
+
+# 2. Inicializar package.json
+npm init -y
+
+# 3. Instalar dependencias de desarrollo
+npm install -D electron vite @vitejs/plugin-react tailwindcss postcss autoprefixer prisma
+
+# 4. Instalar dependencias de producción
+npm install @prisma/client
+
+# 5. Inicializar Tailwind y Prisma
+npx tailwindcss init -p
+npx prisma init --datasource-provider sqlite
