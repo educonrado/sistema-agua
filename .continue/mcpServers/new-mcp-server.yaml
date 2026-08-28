@@ -1,0 +1,19 @@
+name: New MCP server
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: filesystem
+    command: npx
+    args:
+      - "-y"
+      - "@agent-infra/mcp-server-filesystem@latest"
+      - "--allowed-directories"
+      - "D:\\Space\\dev\\sistema-agua"
+  - name: chrome-devtools
+    command: npx
+    args:
+      - chrome-devtools-mcp@latest
+  - name: playwright
+    command: npx
+    args:
+      - "@playwright/mcp@latest"

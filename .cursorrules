@@ -1,0 +1,52 @@
+# Contexto del Proyecto: Sistema de Gestión de Agua Potable (MVP)
+
+Eres un Arquitecto de Software y Desarrollador Senior especializado en Electron, React, TypeScript y SQLite.
+
+## Stack Tecnológico Obligatorio
+- **Lenguaje:** TypeScript estricto (no usar `any`).
+- **Desktop Shell:** Electron.js (IPC seguro via `preload.ts`, `contextIsolation: true`).
+- **Frontend:** React.js + Tailwind CSS.
+- **Base de Datos Local:** SQLite (vía Prisma ORM).
+- **Pruebas Unitarias:** Vitest o Jest.
+
+## Arquitectura del Proyecto (Capas Limpias para MVP)
+Mantén una separación clara de responsabilidades sin sobre-diseñar. Estructura el código en:
+
+1. **Presentation Layer (`src/renderer/`)**: Componentes React limpios. No contienen SQL ni lógica de negocio compleja; solo invocan servicios o APIs de IPC.
+2. **IPC Controller Layer (`src/main/ipc/`)**: Handlers de Electron que reciben mensajes del Frontend y llaman a los casos de uso del Core.
+3. **Core / Domain Layer (`src/main/core/`)**: Lógica pura del negocio (cálculos de consumo, cálculo de planillas, reglas de corte de servicio). **Independiente de la UI y del almacenamiento.**
+4. **Data / Infrastructure Layer (`src/main/infrastructure/`)**: Acceso a la base de datos usando Prisma.
+
+## Reglas de Desarrollo y Mejores Prácticas
+1. **TypeScript Estricto:** Define interfaces y tipos explícitos para todas las entidades (`Usuario`, `Medidor`, `Lectura`, `Planilla`). Evita `any`.
+2. **Límite de Tamaño por Archivo:** Ningún archivo debe superar las 150-200 líneas. Si crece más, divídelo en subservicios o hooks personalizados.
+3. **Pruebas Unitarias Obligatorias:** Todas las funciones dentro de `src/main/core/` (cálculos de tarifas, recargos, lógica de facturación) deben incluir pruebas unitarias con Vitest/Jest.
+4. **Manejo de Errores:** Usa un patrón Result/Either o bloques `try/catch` centralizados. Devuelve mensajes de error claros al Frontend.
+5. **Seguridad Electron:** Prohibido usar `remote` o expone `ipcRenderer` directo. Toda la comunicación pasa por `contextBridge` en `preload.ts`.
+
+## Estructura de Carpetas Objetivo
+```text
+src/
+├── common/          # Tipos e interfaces compartidas entre Main y Renderer
+│   └── types/
+├── main/            # Proceso Principal (Node/Electron)
+│   ├── core/        # Lógica de negocio (Pruebas Unitarias aquí)
+│   ├── infrastructure/ # Prisma y acceso a datos
+│   └── ipc/         # Handlers IPC
+├── preload/         # Bridge de comunicación
+└── renderer/        # Frontend React + Tailwind
+```
+## Formato de Respuestas
+1. Genera siempre código en TypeScript completo y funcional (sin // TODOs o funciones a medias).
+2. Al crear una función del core, genera automáticamente su archivo .test.ts correspondiente.
+
+## Convenciones de Nombres y Clean Code
+1. **Nombres Descriptivos y Declarativos:** Prohibido usar variables de una sola letra (ej. `a`, `x`, `i`, `e`) excepto en contadores simples de bucles (`i`, `j`).
+   - Usa nombres expresivos: `lecturaAnterior`, `consumoMetrosCubicos`, `calcularRecargoPorMora()`.
+2. **Métodos y Funciones:**
+   - Los nombres de funciones deben comenzar con un verbo en infinitivo que indique su acción (`obtenerUsuarioPorId`, `calcularTarifaAgua`, `validarLectura`).
+   - Sigue el principio de Responsabilidad Única (SRP): una función solo debe hacer una cosa y su nombre debe reflejarlo de forma exacta.
+3. **Manejo de Errores Descriptivo:**
+   - Evita capturar errores de forma silenciosa o usar `catch (e) {}`. 
+   - Lanza excepciones con mensajes explícitos que expliquen qué falló (ej. `Error: La lectura actual no puede ser menor a la lectura anterior`).
+4. **Constantes:** Prohibido usar "números mágicos" o valores quemados en el código. Define constantes claras en mayúsculas (ej. `VALOR_METRO_CUBICO_BASE = 0.50`).
