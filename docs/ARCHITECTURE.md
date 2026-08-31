@@ -35,3 +35,21 @@ El sistema reemplaza los procesos manuales (cuadernos físicos) con una aplicaci
   - *Administrador (Presidente/Tesorero):* Acceso total (tarifas, padrón, caja, reportes, auditoría, usuarios).
   - *Digitador:* Acceso restringido exclusivamente al flujo de ingreso ágil de lecturas de medidores.
 - **Validación Multicapa:** El control de roles se aplica en el renderizado de la UI, en la protección de rutas locales, y es validado estrictamente a nivel del *Main Process* (Backend IPC) antes de ejecutar cualquier escritura en la base de datos.
+## 3. Guía de Interfaz y Experiencia de Usuario (UI/UX)
+El diseño de la aplicación se rige estrictamente por la filosofía de **"Minimalismo Radical"**, creando una interfaz que debe ser tan obvia que no requiera manuales de instrucción.
+
+### 3.1. Principios de Diseño Visual
+- **Pantallas de Propósito Único:** Cada vista debe resolver una sola tarea (ej. panel de digitación masiva de lecturas o punto de recaudación). Queda prohibido incluir menús complejos, gráficos innecesarios o atajos que distraigan al operador.
+- **Tipografía sobre Iconografía:** Los iconos abstractos pueden ser confusos en entornos rurales. Se debe priorizar el uso de botones enormes, con alto contraste y textos de acción directos, como "GUARDAR LECTURA" o "COBRAR".
+- **Sistema de Colores (Semántica Obvia):**
+  - **Azul Principal (Sky-600):** Utilizado en encabezados, botones primarios y branding[cite: 2].
+  - **Verde (Green-600):** Indica éxito, confirmación de transacciones y usuarios al día[cite: 2].
+  - **Amarillo/Naranja (Amber-600):** Alertas visuales de mora incipiente (1 mes de atraso)[cite: 1, 2].
+  - **Rojo (Red-600):** Alerta visual inmediata de peligro para morosos (más de 2 o 3 meses) que requieran corte o cobro urgente[cite: 1, 2].
+  - **Fondo:** Se prioriza un fondo claro (Slate-50) con texto oscuro (Slate-900) para asegurar la máxima legibilidad[cite: 2].
+
+### 3.2. Cero Fricciones y Operación Segura
+- **Lenguaje Cotidiano:** La interfaz debe evitar la jerga contable compleja para respetar la gestión comunitaria tradicional. Por ejemplo, se debe usar el término "Comuneros con Deuda" en lugar de conceptos como "Cartera Vencida".
+- **Flujos Inquebrantables:** Los procesos deben ser estrictamente lineales. El flujo de recaudación debe ser directo: Buscar usuario -> Ver total a pagar -> Registrar pago -> Emitir comprobante, sin botones secundarios que diluyan la atención.
+- **Prevención de Errores (Poka-yoke):** El diseño debe cuidar al usuario bloqueando errores lógicos de manera inmediata. Por ejemplo, si se ingresa una lectura de medidor que es menor a la del mes anterior, el sistema debe marcar un error visual instantáneo exigiendo justificación
+- **Integración Transparente (Hardware):** Al hacer clic en imprimir, el sistema debe disparar la impresión directamente a la minipresora térmica conectada. No se deben abrir cuadros de diálogo confusos del sistema operativo de Windows

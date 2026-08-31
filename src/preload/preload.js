@@ -1,14 +1,15 @@
-const { contextBridge, ipcRenderer } = require('electron');
+import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  // Ejemplo: Enviar mensajes al proceso principal
-  sendMessage: (channel, data) => ipcRenderer.send(channel, data),
-  
-  // Ejemplo: Recibir respuestas
-  onResponse: (channel, func) => {
-    ipcRenderer.on(channel, (event, ...args) => func(...args));
-  },
+  // Configuration and Onboarding
+  configNeedsOnboarding: () => ipcRenderer.invoke('config:needs-onboarding'),
+  configGet: () => ipcRenderer.invoke('config:get'),
+  configCreateInitial: (configData) => ipcRenderer.invoke('config:create-initial', configData),
+  configValidate: (configData) => ipcRenderer.invoke('config:validate', configData),
 
-  // Aquí puedes exponer funciones para consultar Prisma vía IPC
-  // (Prisma debe ejecutarse en el proceso Main, nunca en el Renderer)
-});
+  // Generic message sending
+  sendMessage: (channel, data) => ipcRenderer.send(channel, data),
+  onResponse: (channel, func) => {
+    ipcRenderer.on(channel, (event, ...args) => func(...args))
+  },
+})

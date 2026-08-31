@@ -1,14 +1,23 @@
 {
   "name": "sistema-agua",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Sistema de gestión de agua potable para comunidades rurales",
+  "main": "dist/main/main.js",
+  "homepage": "./",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "prisma skills sync || exit 0"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "electron": "electron .",
+    "start": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && npm run electron\"",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "postinstall": "prisma generate || exit 0"
   },
   "repository": {
     "type": "git",
@@ -17,20 +26,31 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/educonrado/sistema-agua/issues"
   },
   "homepage": "https://github.com/educonrado/sistema-agua#readme",
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
     "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^8.2.0",
     "electron": "^44.0.0",
-    "prisma": "^7.10.0",
+    "jsdom": "^23.0.0",
+    "prisma": "^5.9.0",
     "tailwindcss": "^4.3.3",
-    "vite": "^8.2.2"
+    "vite": "^8.2.2",
+    "vitest": "^1.0.4",
+    "wait-on": "^7.0.1"
   },
   "dependencies": {
-    "@prisma/client": "^7.10.0"
+    "@prisma/client": "^5.9.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sqlite3": "^5.1.6"
   }
 }
